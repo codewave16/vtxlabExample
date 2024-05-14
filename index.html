@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ETA Checker</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        .container {
+            margin-top: 50px;
+            width: 500px;
+        }
+
+        .center {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: lightsalmon;
+        }
+
+        .button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #ccc;
+            border-width: medium;
+            background-color: lightblue;
+        }
+
+        .list-group-item-tko {
+            background-color: rgb(209, 85, 209);
+        }
+
+        .list-group-item-tml {
+            background-color: rgb(133, 70, 70);
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="center">
+            <label class="center" for="station">站名:</label>
+            <select id="station" onchange=autoInputLine() onload=autoInputLine()>
+                <option disabled>---機場快綫---</option>
+                <option value="HOK">香港</option>
+                <option value="KOW">九龍</option>
+                <option value="TSY">青衣</option>
+                <option value="AIR">機場</option>
+                <option value="AWE">博覽館</option>
+                <option disabled>---東涌線---</option>
+                <option value="TUC">東涌</option>
+                <option value="SUN">欣澳</option>
+                <option value="TSY">青衣</option>
+                <option value="LAK">荔景</option>
+                <option value="NAC">南昌</option>
+                <option value="OLY">奧運</option>
+                <option value="KOW">九龍</option>
+                <option value="HOK">香港</option>
+                <option disabled>---屯馬線---</option>
+                <option value="WKS">烏溪沙</option>
+                <option value="MOS">馬鞍山</option>
+                <option value="HEO">恆安</option>
+                <option value="TSH">大水坑</option>
+                <option value="SHM">石門</option>
+                <option value="CIO">第一城</option>
+                <option value="STW">沙田圍</option>
+                <option value="CKT">車公廟</option>
+                <option value="TAW">大圍</option>
+                <option value="HIK">顯徑</option>
+                <option value="DIH">鑽石山</option>
+                <option value="KAT">啟德</option>
+                <option value="SUW">宋皇臺</option>
+                <option value="TKW">土瓜灣</option>
+                <option value="HOM">何文田</option>
+                <option value="HUH">紅磡</option>
+                <option value="ETS">尖東</option>
+                <option value="AUS">柯士甸</option>
+                <option value="NAC">南昌</option>
+                <option value="MEF">美孚</option>
+                <option value="TWW">荃灣西</option>
+                <option value="KSR">錦上路</option>
+                <option value="YUL">元朗</option>
+                <option value="LOP">朗屏</option>
+                <option value="TIS">天水圍</option>
+                <option value="SIH">兆康</option>
+                <option value="TUM">屯門</option>
+                <option disabled>---將軍澳線---</option>
+                <option value="NOP">北角</option>
+                <option value="QUB">鰂魚涌</option>
+                <option value="YAT">油塘</option>
+                <option value="TIK">調景嶺</option>
+                <option value="TKO">將軍澳</option>
+                <option value="LHP">康城</option>
+                <option value="HAH">坑口</option>
+                <option value="POA">寶琳</option>
+                <option disabled>---東鐵線---</option>
+                <option value="ADM">金鐘</option>
+                <option value="EXC">會展</option>
+                <option value="HUH">紅磡</option>
+                <option value="MKK">旺角東</option>
+                <option value="KOT">九龍塘</option>
+                <option value="TAW">大圍</option>
+                <option value="SHT">沙田</option>
+                <option value="FOT">火炭</option>
+                <option value="RAC">馬場</option>
+                <option value="UNI">大學</option>
+                <option value="TAP">大埔墟</option>
+                <option value="TWO">太和</option>
+                <option value="FAN">粉嶺</option>
+                <option value="SHS">上水</option>
+                <option value="LOW">羅湖</option>
+                <option value="LMC">落馬洲</option>
+                <option disabled>---南港島線---</option>
+                <option value="ADM">金鐘</option>
+                <option value="OCP">海洋公園</option>
+                <option value="WCH">黃竹坑</option>
+                <option value="LET">利東</option>
+                <option value="SOH">海怡半島</option>
+                <option disabled>---荃灣線---</option>
+                <option value="CEN">中環</option>
+                <option value="ADM">金鐘</option>
+                <option value="TST">尖沙咀</option>
+                <option value="JOR">佐敦</option>
+                <option value="YMT">油麻地</option>
+                <option value="MOK">旺角</option>
+                <option value="PRE">太子</option>
+                <option value="SSP">深水埗</option>
+                <option value="CSW">長沙灣</option>
+                <option value="LCK">荔枝角</option>
+                <option value="MEF">美孚</option>
+                <option value="LAK">荔景</option>
+                <option value="KWF">葵芳</option>
+                <option value="KWH">葵興</option>
+                <option value="TWH">大窩口</option>
+                <option value="TSW">荃灣</option>
+                <option disabled>---觀塘線---</option>
+                <option value="WHA">黃埔</option>
+                <option value="HOM">何文田</option>
+                <option value="YMT">油麻地</option>
+                <option value="MOK">旺角</option>
+                <option value="PRE">太子</option>
+                <option value="SKM">石硤尾</option>
+                <option value="KOT">九龍塘</option>
+                <option value="LOF">樂富</option>
+                <option value="WTS">黃大仙</option>
+                <option value="DIH">鑽石山</option>
+                <option value="CHH">彩虹</option>
+                <option value="KOB">九龍灣</option>
+                <option value="NTK">牛頭角</option>
+                <option value="KWT">觀塘</option>
+                <option value="LAT">藍田</option>
+                <option value="YAT">油塘</option>
+                <option value="TIK">調景嶺</option>
+                <option disabled>---港島線---</option>
+                <option value="KET">堅尼地城</option>
+                <option value="HKU">香港大學</option>
+                <option value="SYP">西營盤</option>
+                <option value="SHW">上環</option>
+                <option value="CEN">中環</option>
+                <option value="ADM">金鐘</option>
+                <option value="WAC">灣仔</option>
+                <option value="CAB">銅鑼灣</option>
+                <option value="TIH">天后</option>
+                <option value="FOH">炮台山</option>
+                <option value="NOP">北角</option>
+                <option value="QUB">鰂魚涌</option>
+                <option value="TAK">太古</option>
+                <option value="SWH">西灣河</option>
+                <option value="SKW">筲箕灣</option>
+                <option value="HFC">杏花邨</option>
+                <option value="CHW">柴灣</option>
+            </select>
+        </div>
+
+        <textarea id="lines" readonly style="display: none;"></textarea>
+        <div class="button">
+            <button onclick="fetchEtas()">搜尋</button>
+        </div>
+
+        <div id="etas"></div>
+    </div>
+    <script>
+        async function fetchEtas() {
+            const station = document.getElementById('station').value;
+            const linesElement = document.getElementById('lines');
+            const lines = linesElement.value.split(',');
+            const apiBaseUrl = `https://rt.data.gov.hk/v1/transport/mtr/getSchedule.php`;
+            try {
+                const allEtas = [];
+                for (const line of lines) {
+                    const apiUrl = `${apiBaseUrl}?line=${line}&sta=${station}`;
+                    console.log('apiUrl : ' + apiUrl);
+                    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+
+                    const response = await fetch(apiUrl, {
+                        cache: isSafari ? "default" : "no-store",
+                    });
+                    const { data, status } = await response.json();
+
+                    if (status === 0) {
+                        document.getElementById('etas').innerText = 'No ETAs available.';
+                        return;
+                    } else {
+                        console.log(`ETAs available for line ${line}:`, data);
+                        allEtas.push({ line, data });
+
+                    }
+                }
+                displayData(allEtas, station);
+
+            } catch (error) {
+                console.error('Error fetching ETAs:', error);
+                document.getElementById('etas').innerText = 'Error fetching ETAs. Please try again later.';
+            }
+        }
+        function autoInputLine() {
+            const station = document.getElementById('station').value;
+            let lines = [];
+
+            switch (station) {
+                case 'TSY':
+                case 'KOW':
+                case 'HOK':
+                    lines.push('AEL', 'TCL');
+                    break;
+                case 'LAK':
+                    lines.push('TWL', 'TCL');
+                    break;
+                case 'MOK':
+                case 'YMT':
+                case 'PRE':
+                    lines.push('TWL', 'KTL');
+                    break;
+                case 'ADM':
+                    lines.push('EAL', 'SIL', 'TWL', 'ISL');
+                    break;
+                case 'YAT':
+                case 'TIK':
+                    lines.push('KTL', 'TKL');
+                    break;
+                case 'NOP':
+                case 'QUB':
+                    lines.push('TKL', 'ISL');
+                    break;
+                case 'HOM':
+                case 'DIH':
+                    lines.push('KTL', 'TML');
+                    break;
+                case 'TAW':
+                case 'HUH':
+                    lines.push('EAL', 'TML');
+                    break;
+                case 'KOT':
+                    lines.push('EAL', 'KTL');
+                    break;
+                case 'CEN':
+                    lines.push('TWL', 'ISL');
+                    break;
+                case 'AIR':
+                case 'AWE':
+                    lines.push('AEL');
+                    break;
+                case 'TUC':
+                case 'SUN':
+                case 'NAC':
+                case 'OLY':
+                    lines.push('TCL');
+                    break;
+                case 'WKS':
+                case 'MOS':
+                case 'HEO':
+                case 'TSH':
+                case 'SHM':
+                case 'CIO':
+                case 'STW':
+                case 'CKT':
+                case 'HIK':
+                case 'KAT':
+                case 'SUW':
+                case 'TKW':
+                case 'ETS':
+                case 'AUS':
+                case 'NAC':
+                case 'MEF':
+                case 'TWW':
+                case 'KSR':
+                case 'YUL':
+                case 'LOP':
+                case 'TIS':
+                case 'SIH':
+                case 'TUM':
+                    lines.push('TML');
+                    break;
+                case 'TKO':
+                case 'LHP':
+                case 'HAH':
+                case 'POA':
+                    lines.push('TKL');
+                    break;
+                case 'EXC':
+                case 'MKK':
+                case 'SHT':
+                case 'FOT':
+                case 'RAC':
+                case 'UNI':
+                case 'TAP':
+                case 'TWO':
+                case 'FAN':
+                case 'SHS':
+                case 'LOW':
+                case 'LMC':
+                    lines.push('EAL');
+                    break;
+                case 'OCP':
+                case 'WCH':
+                case 'LET':
+                case 'SOH':
+                    lines.push('SIL');
+                    break;
+                case 'TST':
+                case 'JOR':
+                case 'SSP':
+                case 'CSW':
+                case 'LCK':
+                case 'MEF':
+                case 'KWF':
+                    lines.push('TWL');
+                    break;
+                case 'WHA':
+                case 'SKM':
+                case 'LOF':
+                case 'WTS':
+                case 'CHH':
+                case 'KOB':
+                case 'NTK':
+                case 'KWT':
+                case 'LAT':
+                    lines.push('KTL');
+                    break;
+                case 'KET':
+                case 'HKU':
+                case 'SYP':
+                case 'SHW':
+                case 'WAC':
+                case 'CAB':
+                case 'TIH':
+                case 'FOH':
+                case 'TAK':
+                case 'SWH':
+                case 'SKW':
+                case 'HFC':
+                case 'CHW':
+                    lines.push('ISL');
+                    break; default:
+                    lines.push('');
+                    break;
+            }
+
+            document.getElementById('lines').value = lines;
+        }
+
+        function displayData(allEtas, route) {
+            const container = document.getElementById('etas');
+            container.innerHTML = '';
+            allEtas.forEach(({ line, data }) => {
+                ['UP', 'DOWN'].forEach(direction => {
+                    const directionData = data[`${line}-${route}`]?.[direction.toUpperCase()];
+                    if (directionData) {
+                        let subtitleCreated = false;
+                        let lineName = '';
+                        directionData.forEach(item => {
+                            const list = document.createElement('ul');
+                            if (!subtitleCreated) {
+                                const subtitle = document.createElement('ul');
+                                if (line === 'AEL') {
+                                    lineName='機場快綫';
+                                    subtitle.classList.add('list-group-item-info');
+                                } else if (line === 'TCL') {
+                                    lineName='東涌綫';
+                                    subtitle.classList.add('list-group-item-warning');
+                                } else if (line === 'TWL') {
+                                    lineName='屯馬綫';
+                                    subtitle.classList.add('list-group-item-danger');
+                                } else if (line === 'KTL') {
+                                    lineName='觀塘綫';
+                                    subtitle.classList.add('list-group-item-success');
+                                } else if (line === 'EAL') {
+                                    lineName='東鐵綫';
+                                    subtitle.classList.add('list-group-item-info');
+                                } else if (line === 'SIL') {
+                                    lineName='南港島綫';
+                                    subtitle.classList.add('list-group-item-primary');
+                                } else if (line === 'TKL') {
+                                    lineName='將軍澳綫';
+                                    subtitle.classList.add('list-group-item-tko');
+                                } else if (line === 'TML') {
+                                    lineName='屯馬綫';
+                                    subtitle.classList.add('list-group-item-tml');
+                                } else if (line === 'ISL') {
+                                    lineName='港島綫';
+                                    subtitle.classList.add('list-group-item-primary');
+                                }
+                                subtitle.style.width = '410px';
+                                subtitle.style.height = '50px';
+                                subtitle.style.alignItems = "center";
+                                subtitle.style.justifyContent = "center";
+                                subtitle.style.display = "flex";
+                                subtitle.textContent = `${lineName} : 往 ${getStationName(item.dest)} 方向`;
+                                list.appendChild(subtitle);
+                                subtitleCreated = true;
+                            }
+                            const listItem = document.createElement('li');
+                            listItem.classList.add('list-group-item', 'list-group-item-dark');
+                            listItem.style.width = '410px';
+                            listItem.style.alignItems = "start";
+                            listItem.style.justifyContent = "center";
+                            listItem.style.display = "flex";
+                            listItem.style.height = "50px";
+                            listItem.style.marginBottom = "-16px";
+
+                            let timeDifference = new Date(item.time) - new Date();
+                            if (timeDifference < 1) {
+                                timeDifference = '即將到達';
+                                listItem.textContent = `${item.plat} 號月台,  ${timeDifference}`;
+
+                            }
+                            if (timeDifference >= 1) {
+                                const timeDifferenceInMinutes = Math.floor(timeDifference / (1000 * 60));
+                                listItem.textContent = `${item.plat} 號月台,  ${timeDifferenceInMinutes} 分鐘`;
+
+                            }
+                            list.appendChild(listItem);
+                            container.appendChild(list);
+                        });
+                    }
+                });
+
+            })
+
+        }
+
+        function getStationName(stationCode) {
+            switch (stationCode) {
+                case 'HOK':
+                    return '香港';
+                case 'KOW':
+                    return '九龍';
+                case 'TSY':
+                    return '青衣';
+                case 'AIR':
+                    return '機場';
+                case 'AWE':
+                    return '博覽館';
+                case 'TUC':
+                    return '東涌';
+                case 'SUN':
+                    return '欣澳';
+                case 'LAK':
+                    return '荔景';
+                case 'NAC':
+                    return '南昌';
+                case 'OLY':
+                    return '奧運';
+                case 'WKS':
+                    return '烏溪沙';
+                case 'MOS':
+                    return '馬鞍山';
+                case 'HEO':
+                    return '恆安';
+                case 'TSH':
+                    return '大水坑';
+                case 'SHM':
+                    return '石門';
+                case 'CIO':
+                    return '第一城';
+                case 'STW':
+                    return '沙田圍';
+                case 'CKT':
+                    return '車公廟';
+                case 'TAW':
+                    return '大圍';
+                case 'HIK':
+                    return '顯徑';
+                case 'DIH':
+                    return '鑽石山';
+                case 'KAT':
+                    return '啟德';
+                case 'SUW':
+                    return '宋皇臺';
+                case 'TKW':
+                    return '土瓜灣';
+                case 'HOM':
+                    return '何文田';
+                case 'HUH':
+                    return '紅磡';
+                case 'ETS':
+                    return '尖東';
+                case 'AUS':
+                    return '柯士甸';
+                case 'MEF':
+                    return '美孚';
+                case 'TWW':
+                    return '荃灣西';
+                case 'KSR':
+                    return '錦上路';
+                case 'YUL':
+                    return '元朗';
+                case 'LOP':
+                    return '朗屏';
+                case 'TIS':
+                    return '天水圍';
+                case 'SIH':
+                    return '兆康';
+                case 'TUM':
+                    return '屯門';
+                case 'NOP':
+                    return '北角';
+                case 'QUB':
+                    return '鰂魚涌';
+                case 'YAT':
+                    return '油塘';
+                case 'TIK':
+                    return '調景嶺';
+                case 'TKO':
+                    return '將軍澳';
+                case 'LHP':
+                    return '康城';
+                case 'HAH':
+                    return '坑口';
+                case 'POA':
+                    return '寶琳';
+                case 'ADM':
+                    return '金鐘';
+                case 'EXC':
+                    return '會展';
+                case 'MKK':
+                    return '旺角東';
+                case 'KOT':
+                    return '九龍塘';
+                case 'SHT':
+                    return '沙田';
+                case 'FOT':
+                    return '火炭';
+                case 'RAC':
+                    return '馬場';
+                case 'UNI':
+                    return '大學';
+                case 'TAP':
+                    return '大埔墟';
+                case 'TWO':
+                    return '太和';
+                case 'FAN':
+                    return '粉嶺';
+                case 'SHS':
+                    return '上水';
+                case 'LOW':
+                    return '羅湖';
+                case 'LMC':
+                    return '落馬洲';
+                case 'OCP':
+                    return '海洋公園';
+                case 'WCH':
+                    return '黃竹坑';
+                case 'LET':
+                    return '利東';
+                case 'SOH':
+                    return '海怡半島';
+                case 'CEN':
+                    return '中環';
+                case 'TST':
+                    return '尖沙咀';
+                case 'JOR':
+                    return '佐敦';
+                case 'YMT':
+                    return '油麻地';
+                case 'MOK':
+                    return '旺角';
+                case 'PRE':
+                    return '太子';
+                case 'SSP':
+                    return '深水埗';
+                case 'CSW':
+                    return '長沙灣';
+                case 'LCK':
+                    return '荔枝角';
+                case 'KWF':
+                    return '葵芳';
+                case 'KWH':
+                    return '葵興';
+                case 'TWH':
+                    return '大窩口';
+                case 'TSW':
+                    return '荃灣';
+                case 'WHA':
+                    return '黃埔';
+                case 'SKM':
+                    return '石硤尾';
+                case 'LOF':
+                    return '樂富';
+                case 'WTS':
+                    return '黃大仙';
+                case 'CHH':
+                    return '彩虹';
+                case 'KOB':
+                    return '九龍灣';
+                case 'NTK':
+                    return '牛頭角';
+                case 'KET':
+                    return '堅尼地城';
+                case 'HKU':
+                    return '香港大學';
+                case 'SYP':
+                    return '西營盤';
+                case 'SHW':
+                    return '上環';
+                case 'WAC':
+                    return '灣仔';
+                case 'CAB':
+                    return '銅鑼灣';
+                case 'TIH':
+                    return '天后';
+                case 'FOH':
+                    return '炮台山';
+                case 'SWH':
+                    return '西灣河';
+                case 'SKW':
+                    return '筲箕灣';
+                case 'HFC':
+                    return '杏花邨';
+                case 'CHW':
+                    return '柴灣';
+                default:
+                    return stationCode; // Return the station code if no match is found
+            }
+        }
+
+        window.onload = function () {
+            autoInputLine();
+        }
+    </script>
+</body>
+
+</html>
