@@ -10,7 +10,8 @@
     <style>
         .container {
             margin-top: 50px;
-            width: 500px;
+            max-width: 100%;
+            padding: 0 15px;
         }
 
         .center {
@@ -175,7 +176,6 @@
                 <option value="CHW">柴灣</option>
             </select>
         </div>
-
         <textarea id="lines" readonly style="display: none;"></textarea>
         <div class="button">
             <button onclick="fetchEtas()">搜尋</button>
@@ -366,81 +366,70 @@
         function displayData(allEtas, route) {
             const container = document.getElementById('etas');
             container.innerHTML = '';
+
             allEtas.forEach(({ line, data }) => {
                 ['UP', 'DOWN'].forEach(direction => {
                     const directionData = data[`${line}-${route}`]?.[direction.toUpperCase()];
                     if (directionData) {
                         let subtitleCreated = false;
                         let lineName = '';
+                        const list = document.createElement('ul');
+                        list.classList.add('list-group'); // Add class to the list
+
                         directionData.forEach(item => {
-                            const list = document.createElement('ul');
                             if (!subtitleCreated) {
-                                const subtitle = document.createElement('ul');
+                                const subtitle = document.createElement('li');
+                                subtitle.classList.add('list-group-item', 'subtitle'); // Add class to the subtitle
                                 if (line === 'AEL') {
-                                    lineName='機場快綫';
+                                    lineName = '機場快綫';
                                     subtitle.classList.add('list-group-item-info');
                                 } else if (line === 'TCL') {
-                                    lineName='東涌綫';
+                                    lineName = '東涌綫';
                                     subtitle.classList.add('list-group-item-warning');
                                 } else if (line === 'TWL') {
-                                    lineName='屯馬綫';
+                                    lineName = '屯馬綫';
                                     subtitle.classList.add('list-group-item-danger');
                                 } else if (line === 'KTL') {
-                                    lineName='觀塘綫';
+                                    lineName = '觀塘綫';
                                     subtitle.classList.add('list-group-item-success');
                                 } else if (line === 'EAL') {
-                                    lineName='東鐵綫';
+                                    lineName = '東鐵綫';
                                     subtitle.classList.add('list-group-item-info');
                                 } else if (line === 'SIL') {
-                                    lineName='南港島綫';
+                                    lineName = '南港島綫';
                                     subtitle.classList.add('list-group-item-primary');
                                 } else if (line === 'TKL') {
-                                    lineName='將軍澳綫';
+                                    lineName = '將軍澳綫';
                                     subtitle.classList.add('list-group-item-tko');
                                 } else if (line === 'TML') {
-                                    lineName='屯馬綫';
+                                    lineName = '屯馬綫';
                                     subtitle.classList.add('list-group-item-tml');
                                 } else if (line === 'ISL') {
-                                    lineName='港島綫';
+                                    lineName = '港島綫';
                                     subtitle.classList.add('list-group-item-primary');
                                 }
-                                subtitle.style.width = '410px';
-                                subtitle.style.height = '50px';
-                                subtitle.style.alignItems = "center";
-                                subtitle.style.justifyContent = "center";
-                                subtitle.style.display = "flex";
+                                subtitle.style.textAlign = 'center';
                                 subtitle.textContent = `${lineName} : 往 ${getStationName(item.dest)} 方向`;
                                 list.appendChild(subtitle);
                                 subtitleCreated = true;
                             }
                             const listItem = document.createElement('li');
-                            listItem.classList.add('list-group-item', 'list-group-item-dark');
-                            listItem.style.width = '410px';
-                            listItem.style.alignItems = "start";
-                            listItem.style.justifyContent = "center";
-                            listItem.style.display = "flex";
-                            listItem.style.height = "50px";
-                            listItem.style.marginBottom = "-16px";
-
+                            listItem.classList.add('list-group-item', 'list-group-item-dark', 'list-item'); // Add classes to the list item
+                            listItem.style.textAlign = 'center';
                             let timeDifference = new Date(item.time) - new Date();
-                            if (timeDifference < 1) {
+                            if (timeDifference < 1 || timeDifference === 0) {
                                 timeDifference = '即將到達';
-                                listItem.textContent = `${item.plat} 號月台,  ${timeDifference}`;
-
+                            } else {
+                                timeDifference = `${Math.floor(timeDifference / (1000 * 60))} 分鐘`;
                             }
-                            if (timeDifference >= 1) {
-                                const timeDifferenceInMinutes = Math.floor(timeDifference / (1000 * 60));
-                                listItem.textContent = `${item.plat} 號月台,  ${timeDifferenceInMinutes} 分鐘`;
-
-                            }
+                            listItem.textContent = `${item.plat} 號月台, ${timeDifference}`;
                             list.appendChild(listItem);
-                            container.appendChild(list);
                         });
+
+                        container.appendChild(list);
                     }
                 });
-
-            })
-
+            });
         }
 
         function getStationName(stationCode) {
